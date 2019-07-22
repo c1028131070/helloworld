@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://code.alibabatech.com/schema/dubbo
+        http://code.alibabatech.com/schema/dubbo/dubbo.xsd
+        ">
+	<!-- 当前应用名称，用于注册中心计算应用间依赖关系，注意：消费者和提供者应用名不要一样，此参数不是匹配条件，你当前项目叫什么名字就填什么，和提供者消费者角色无关 -->
+	<dubbo:application name="dubbo-consumer" />
+	<!-- 连接注册中心配置 -->
+	<dubbo:registry protocol="zookeeper" address="127.0.0.1:2181" />
+	<!--dubbo注解所在的包信息-->
+	<dubbo:annotation package="com.goods.display.controller"/>
+	<!-- 生成远程服务代理，可以和本地bean一样使用demoService,id:服务引用BeanId,interface:调用服务接口名 -->
+	<dubbo:reference id="searchService" interface="com.goods.search.service.SearchService" />
+</beans>
