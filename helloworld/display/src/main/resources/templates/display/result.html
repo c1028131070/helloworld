@@ -1,0 +1,207 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/html" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>美价网--chenwb</title>
+    <link type="text/css" rel="stylesheet" href="../css/bootstrap.css">
+    <link type="text/css" rel="stylesheet" href="../css/bootstrap-grid.css">
+    <link type="text/css" rel="stylesheet" href="../css/display/result.css">
+    <!--<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">-->
+    <!--    <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">-->
+</head>
+<body style="margin: 0;">
+<div style="background:#EEEEEE" align="center">
+    <div class="row">
+        <span class="productNum">欢迎来到<span style="color: #f9513b">美价网</span></span>
+    </div>
+    <div style="width: 100%;background-color:#fff;height:115px;">
+        <div style="width: 1000px; margin: 0 auto; text-align: center;">
+            <div style="width: 994px; margin:0px; height:100px;">
+                <div style="background-color:#fff;height:115px;padding-top:23px;width: 100%">
+                    <span class=" header"><img style="transform: scale(0.8);" src="../assert/img/logo2.png"></span>
+                    <div class="col-sm-8 offset-sm-3">
+                        <form class="form-horizontal" role="form">
+                            <div class="form-group">
+                                <div id="search" class="col-sm-12 form-inline">
+                                    <label class="col-sm-3"
+                                           style="background-color: #f9513b;color: #FFFFFF;width: 100px" for="keyword">商品搜索</label>
+                                    <input type="text" class="form-control float-left col-sm-10"
+                                           style="border-color: #f9513b" id="keyword"
+                                           placeholder="请输入商品关键词" @keyup.enter="clickSearch">
+                                    <input type="button" class="btn btn-primary col-sm-2"
+                                           style="background-color: #f9513b;border-color:#FFFFFF;" value="搜索"
+                                           @click="clickSearch">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="productNum" style="padding-top: 14px" class="row productNum" v-model="productNum" :value="productNum">
+        美价网 > 购物搜索&nbsp 共找到相关商品<b style="color: #a71d2a">{{productNum}}</b>件
+    </div>
+    <div id="filter"
+         style="background-color:#fff; height: 100px; width: 971px;position: relative;z-index: 0;border-radius: 5px;margin-top: 5px"
+         class="content">
+        <div class="row" style="height: 30px;width: 971px">
+            <span class="titlebodyhead" style="height: 30px;width: 971px;text-align: left;">筛选商品</span>
+        </div>
+        <div class="row" style="height: 60px;width: 971px" v-model="keyword">
+            <div class="T" style="text-align: left;"><b>商城报价:</b></div>
+            <div class="divSXrightN">
+                <ul>
+                    <li class="divSXblock">
+                        <a href="#"  class="f12sc">全部
+                            <span class="fcount">(2478)</span>
+                            <input class="mallfilter" type="checkbox" value="all" @click="mallFilter($event)">
+                        </a>
+                    </li>
+                    <li class="divSXblock">
+                        <a href="#"  class="f12sc">
+                            <img src="http://sf.manmanbuy.com/images/sitelogo/1.png" border="0" align="absmiddle">京东商城
+                            <span class="fcount">(2478)</span>
+                            <input class="mallfilter" type="checkbox" value="2" @click="mallFilter($event)">
+                        </a>
+                    </li>
+                    <li class="divSXblock">
+                        <a href="#"  class="f12sc">
+                            <img src="http://sf.manmanbuy.com/images/sitelogo/10.png" border="0" align="absmiddle">天猫商城
+                            <span class="fcount">(113)</span>
+                            <input class="mallfilter" type="checkbox" value="1" @click="mallFilter($event)">
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+    <div id="productContent"
+         style="background-color:#fff; height: 2000px; width: 971px;font-size: 12px;position: relative;z-index: 0;"
+         class="content">
+        <div style="width: 990px; margin-top: 6px; padding-bottom: 2px; overflow: hidden;">
+            <div style="height: 60px;float: left" class="searchBarN">
+                <div class="btn-toolbar" role="toolbar">
+                    <div class="btn-group  btn-group-sm">
+                        <button type="button" class="btn btn-default tab1"
+                                style="background-color: #5A5A5A;color: #ffffff;">默认排序
+                        </button>
+                        <button type="button" class="btn btn-default tab2">销量</button>
+                        <button type="button" class="btn btn-default tab2">价格<i
+                                class="glyphicon glyphicon-arrow-up btn-sm "></i></button>
+                        <button type="button" class="btn btn-default tab2">价格<i
+                                class="glyphicon glyphicon-arrow-down btn-sm"></i></button>
+                    </div>
+                    <form style="margin-left: 20px;margin-top: -6px;">
+                        价格&nbsp
+                        <input type="text" class="priceT" name="price1"/> -
+                        <input type="text" class="priceT" name="price2"/>
+                        <input type="image" class="btn" src="http://misc.manmanbuy.com/images/search/ok.gif"/>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+        <template v-if="total==0">
+            <div>无结果</div>
+        </template>
+        <div v-for="(product,index) in productContent">
+            <div class="row bjlineSmall">
+                <div class="pic">
+                    <a target="_blank"><img v-bind:src="product.productImg"
+                                            style=" transform: scale(0.4);margin-left: -131px;margin-top: -136px;"></a>
+                </div>
+                <div class="title">
+                    <div class="t">
+                        <a v-bind:href="product.productUrl"
+                           target="_blank" v-html="product.productName">
+                            {{product.productName}}
+                        </a>
+                    </div>
+                    <div style="margin-top: 2em;" v-if="product.recommendedReason!=''">
+                        推荐理由:{{product.recommendedReason}}
+                    </div>
+                    <div style="margin-top: 2em;" v-if="product.productScore!=''">
+                        商品评分: <span style="color: red" v-if="product.productScore>=7.5">{{product.productScore}}</span>
+                                <span v-else>{{product.productScore}}</span>
+                    </div>
+                </div>
+
+                <div class="cost">
+                    <a v-bind:href="product.productUrl">
+                        <em>¥</em>
+                        <span>{{product.spareField1}}</span>
+                        <span><img
+                                @mouseenter="enter(index)" @mouseleave="leave(index)" :data-index="index" width="18px"
+                                height="16px" src="http://misc.manmanbuy.com/images/trendx2.png"
+                                border="5px solid transparent" alt="点击查看该商品的走势图"></span>
+                    </a>
+                    <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+                    <div class="priceLine" v-show="seen" :data-productId="product.productId"
+                         style="width: 380px;height:190px;position: absolute;z-index: 0"></div>
+                </div>
+
+                <div class="comment">
+                    有{{product.reviewCount}}人评论
+                </div>
+                <template v-if="product.spareField2=='2'">
+                    <div class="mall">
+                        <p class="m">
+                            <img src="http://sf.manmanbuy.com/images/sitelogo/1.png" align="absmiddle"
+                                 alt="京东商城的报价">
+                            <span>京东商城</span>
+                        </p>
+                    </div>
+                </template>
+                <template v-if="product.spareField2=='1' || product.spareField2==null || product.spareField2==''">
+                    <div class="mall">
+                        <p class="m">
+                            <img src="http://sf.manmanbuy.com/images/sitelogo/10.png" align="absmiddle"
+                                 alt="天猫商城的报价">
+                        </p>
+                        <span>天猫商城</span>
+                    </div>
+                </template>
+            </div>
+
+        </div>
+
+        <!---->
+        <!--<template v-if="total!=0">-->
+        <div class="row">
+            <div class="col-sm-10" style="padding-left: 100px" id="app" v-model="current,allpage,showItem">
+                <page v-if="hackReset"></page>
+            </div>
+        </div>
+        <!--</template>-->
+    </div>
+</div>
+<script src="../js/jquery.min.js"></script>
+<script src="../js/vue.min.js"></script>
+<script src="../js/display/result.js"></script>
+<script src="../js/echarts.min.js"></script>
+<script type="text/x-template" id="page">
+    <ul class="pagination">
+        <li class="page-item"
+            v-show="current != 1"
+            @click="current-- && goto(current--)">
+            <a class="page-link" href="#">上一页</a>
+        </li>
+        <li class="page-item"
+            v-for="index in pages"
+            @click="goto(index)"
+            :class="{'active':current == index}"
+            :key="index">
+            <a class="page-link" href="#">{{index}}</a>
+        </li>
+        <li class="page-item"
+            v-show="allpage != current && allpage != 0 "
+            @click="current++ && goto(current++)">
+            <a class="page-link" href="#">下一页</a>
+        </li>
+    </ul>
+</script>
+</body>
+
+</html>
